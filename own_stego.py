@@ -94,6 +94,7 @@ if __name__ == "__main__":
     parser.add_argument("-f", "--fileop", help="The text file to encode into the image, this only should be specified for encoding")
     parser.add_argument("-sa", "--fileappend", help="The text file to encode into the image, this only should be specified for encoding")
     parser.add_argument("-sw", "--filewrite", help="The text file to encode into the image, this only should be specified for encoding")
+    parser.add_argument("-k", "--key", help="The text file to encode into the image, this only should be specified for encoding")
 
     
     args = parser.parse_args()
@@ -128,29 +129,33 @@ if __name__ == "__main__":
         print("[+] Saved encoded image as:" + filename + "_encoded." + ext)
     
     if args.decode:
-        input_image = args.decode
-        # decode the secret data from the image
-        decoded_data = decode(input_image)
         
-        if args.fileappend:
-            try:
-                f = open(args.fileappend, "a")
-                f.write(decoded_data)
-                f.close()
-            except:
-                print("error")
-            else:
-                print("File operation done")    
-       
-        if args.filewrite:
-            try:
-                f = open(args.filewrite, "w")
-                f.write(decoded_data)
-                f.close()
-            except:
-                print("error")
-            else:
-                print("File operation done")    
-        
-        print("[+] Decoded data:", decoded_data)
+        if args.key == "abcd":
+            input_image = args.decode
+            # decode the secret data from the image
+            decoded_data = decode(input_image)
+            
+            if args.fileappend:
+                try:
+                    f = open(args.fileappend, "a")
+                    f.write(decoded_data)
+                    f.close()
+                except:
+                    print("error")
+                else:
+                    print("saved file")    
+           
+            if args.filewrite:
+                try:
+                    f = open(args.filewrite, "w")
+                    f.write(decoded_data)
+                    f.close()
+                except:
+                    print("error")
+                else:
+                    print("saved file")    
+            
+            print("[+] Decoded data:", decoded_data)
 
+        else:
+            print("enter key use -k and specify key")
