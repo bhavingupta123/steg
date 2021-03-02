@@ -91,9 +91,27 @@ if __name__ == "__main__":
     parser.add_argument("-t", "--text", help="The text data to encode into the image, this only should be specified for encoding")
     parser.add_argument("-e", "--encode", help="Encode the following image")
     parser.add_argument("-d", "--decode", help="Decode the following image")
+    parser.add_argument("-f", "--fileop", help="The text file to encode into the image, this only should be specified for encoding")
+    parser.add_argument("-sa", "--fileappend", help="The text file to encode into the image, this only should be specified for encoding")
+    parser.add_argument("-sw", "--filewrite", help="The text file to encode into the image, this only should be specified for encoding")
+
     
     args = parser.parse_args()
-    secret_data = args.text
+    
+    if args.text:
+        secret_data = args.text
+    
+    if args.fileop:
+        try:
+            f = open(args.fileop, "r")
+            secret_data=f.read()
+            print(secret_data)
+            f.close()
+        except:
+            print("error")
+        else:
+            print("File operation done")
+        
     if args.encode:
         # if the encode argument is specified
         input_image = args.encode
@@ -108,9 +126,31 @@ if __name__ == "__main__":
         # save the output image (encoded image)
         cv2.imwrite(output_image, encoded_image)
         print("[+] Saved encoded image as:" + filename + "_encoded." + ext)
+    
     if args.decode:
         input_image = args.decode
         # decode the secret data from the image
         decoded_data = decode(input_image)
+        
+        if args.fileappend:
+            try:
+                f = open(args.fileappend, "a")
+                f.write(decoded_data)
+                f.close()
+            except:
+                print("error")
+            else:
+                print("File operation done")    
+       
+        if args.filewrite:
+            try:
+                f = open(args.filewrite, "w")
+                f.write(decoded_data)
+                f.close()
+            except:
+                print("error")
+            else:
+                print("File operation done")    
+        
         print("[+] Decoded data:", decoded_data)
 
